@@ -7,20 +7,28 @@
   <link rel="icon" href="favicon.png">
   <style>
     :root {
-      --color-teal: #3096AC;
-      --color-pink: #E890A8;
-      --color-gold: #D59A22;
-      --color-darkblue: #001858;
-      --color-darkteal: #23788A;
-      --color-darkpink: #B84A6E;
-      --color-blue: #3F69B3;
-      --color-bg: #FFFFFF;
-      --color-text: #4A4A58;
+      --mincho: "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Yu Mincho", YuMincho,
+                "Noto Serif JP", "Noto Serif CJK JP", "MS PMincho", serif;
+      --serif-en: Georgia, "Times New Roman", serif;
+      --color-logo:      #001858;  /* REALMEロゴ文字のみ */
+      --color-heading:   #2E2A45;  /* 見出し・タイプ名・質問文 */
+      --color-text:      #6E6980;  /* 本文・選択肢ラベル・ゲージのラベル */
+      --color-muted:     #74707F;  /* 注記 */
+      --color-gold-text: #8A6E2E;  /* タグライン */
+      --color-gold-rule: #D9BE7A;  /* 細い罫線 */
+      --color-rose:      #B94F74;  /* 主ボタン。文字は白 */
+      --color-setonoeru: #9FCDE9;  /* 整える力ゲージ */
+      --color-susumu:    #EFA2BC;  /* 進む力ゲージ */
+      --color-track:     #EFEDF2;  /* ゲージ・進捗バーの下地 */
+      --color-border:    #E3DFE8;  /* カード・選択肢ボタンの枠線 */
+      --color-white:     #FFFFFF;
     }
     body {
-      font-family: sans-serif;
+      font-family: var(--mincho);
       color: var(--color-text);
-      background-color: var(--color-bg);
+      background: linear-gradient(178deg, #EDF5FB 0%, #FFFFFF 46%, #FCEFF3 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
       margin: 0;
       padding: 0;
       line-height: 1.6;
@@ -33,9 +41,11 @@
       box-sizing: border-box;
     }
     h1, h2, h3 {
-      color: var(--color-darkblue);
+      color: var(--color-heading);
       text-align: center;
       margin-top: 0;
+      line-height: 1.85;
+      font-weight: 500;
     }
     button, .btn {
       display: block;
@@ -43,57 +53,82 @@
       box-sizing: border-box;
       text-align: center;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 16px;
       font-family: inherit;
       cursor: pointer;
       text-decoration: none;
     }
     .btn-primary {
-      background-color: var(--color-darkteal);
+      background-color: var(--color-rose);
       color: #FFFFFF;
-      min-height: 56px;
-      line-height: 56px;
+      height: 58px;
+      line-height: 58px;
       font-weight: bold;
       margin-bottom: 16px;
+      border-radius: 29px;
+      box-shadow: 0 5px 16px rgba(185,79,116,.26);
+      font-family: var(--mincho);
     }
     .btn-secondary {
-      background-color: var(--color-darkpink);
-      color: #FFFFFF;
-      min-height: 56px;
-      line-height: 56px;
+      background-color: #FFFFFF;
+      color: var(--color-rose);
+      border: 2px solid var(--color-rose);
+      height: 58px;
+      line-height: 54px;
       font-weight: bold;
       margin-bottom: 16px;
+      border-radius: 29px;
+      font-family: var(--mincho);
     }
     .btn-outline {
       background-color: transparent;
-      color: var(--color-darkblue);
-      border: 2px solid var(--color-darkblue);
-      min-height: 56px;
-      line-height: 52px;
+      color: var(--color-text);
+      border: 1px solid var(--color-border);
+      height: 58px;
+      line-height: 56px;
       font-weight: bold;
       margin-bottom: 16px;
+      border-radius: 29px;
+      font-family: var(--mincho);
     }
     .btn:disabled {
-      background-color: #DDDDDD;
+      background-color: var(--color-border);
       cursor: not-allowed;
     }
     /* Logo area */
     .logo-container {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 0;
     }
     .logo-container img {
       max-width: 200px;
       height: auto;
     }
     .logo-text {
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--color-darkblue);
-      border-bottom: 2px solid var(--color-gold);
+      font-size: 34px;
+      font-family: var(--serif-en);
+      letter-spacing: 6px;
+      color: var(--color-logo);
       display: inline-block;
-      padding-bottom: 4px;
+    }
+    .tagline {
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--color-gold-text);
+      letter-spacing: 1.5px;
+      text-align: center;
+      margin-top: 7px;
+      margin-bottom: 0;
+    }
+    .tagline::after {
+      content: '';
+      display: block;
+      width: 44px;
+      height: 1px;
+      background: var(--color-gold-rule);
+      margin: 22px auto 32px;
     }
     /* Theme grid */
     .theme-grid {
@@ -103,14 +138,18 @@
       margin-bottom: 24px;
     }
     .theme-grid .btn-theme {
-      background-color: #F5F5F5;
-      color: var(--color-darkblue);
+      background-color: #FFFFFF;
+      color: var(--color-text);
       min-height: 56px;
       line-height: 1.4;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #DDDDDD;
+      border: 1px solid var(--color-border);
+    }
+    .theme-grid .btn-theme.selected {
+      background-color: var(--color-rose);
+      color: #FFFFFF;
     }
     .theme-grid .btn-theme.full-width {
       grid-column: 1 / -1;
@@ -119,29 +158,30 @@
     .progress-text {
       text-align: center;
       font-size: 14px;
-      color: var(--color-darkblue);
+      color: var(--color-text);
       margin-bottom: 8px;
     }
     .progress-bar-bg {
-      background-color: #DDDDDD;
-      height: 8px;
-      border-radius: 4px;
+      background-color: var(--color-track);
+      height: 14px;
+      border-radius: 7px;
       margin-bottom: 24px;
       overflow: hidden;
     }
     .progress-bar-fill {
-      background-color: var(--color-gold);
+      background-color: var(--color-gold-rule);
       height: 100%;
       width: 0%;
       transition: width 0.3s;
+      border-radius: 7px;
     }
     .question-text {
       font-size: 18px;
-      line-height: 1.8;
+      line-height: 1.85;
       text-align: center;
       margin-bottom: 32px;
-      font-weight: bold;
-      color: var(--color-darkblue);
+      font-weight: 500;
+      color: var(--color-heading);
     }
     .answer-list {
       display: flex;
@@ -150,16 +190,16 @@
       margin-bottom: 32px;
     }
     .btn-answer {
-      background-color: #F5F5F5;
-      color: var(--color-darkblue);
+      background-color: #FFFFFF;
+      color: var(--color-text);
       min-height: 48px;
-      border: 1px solid #DDDDDD;
+      border: 1px solid var(--color-border);
       padding: 8px 16px;
     }
     .text-link {
       display: block;
       text-align: center;
-      color: var(--color-blue);
+      color: var(--color-text);
       text-decoration: underline;
       font-size: 14px;
       margin-top: 24px;
@@ -178,10 +218,10 @@
     .result-type {
       text-align: center;
       font-size: 32px;
-      font-weight: bold;
-      color: var(--color-darkblue);
+      font-weight: 500;
+      color: var(--color-heading);
       margin-bottom: 32px;
-      line-height: 1.4;
+      line-height: 1.85;
     }
     .gauge-container {
       margin-bottom: 24px;
@@ -194,19 +234,19 @@
       justify-content: space-between;
     }
     .gauge-bg {
-      background-color: #DDDDDD;
-      height: 16px;
-      border-radius: 8px;
+      background-color: var(--color-track);
+      height: 14px;
+      border-radius: 7px;
       overflow: hidden;
     }
     .gauge-fill {
       height: 100%;
-      border-radius: 8px;
+      border-radius: 7px;
     }
     .result-card {
-      background-color: #F5F5F5;
-      border: 1px solid var(--color-gold);
-      border-radius: 8px;
+      background-color: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 12px;
       padding: 24px 16px;
       margin-top: 32px;
       margin-bottom: 32px;
@@ -220,7 +260,7 @@
     .result-section h3 {
       font-size: 16px;
       text-align: left;
-      border-left: 4px solid var(--color-gold);
+      border-left: 4px solid var(--color-gold-rule);
       padding-left: 8px;
       margin-bottom: 8px;
     }
@@ -241,7 +281,7 @@
     }
     .msg-alert {
       text-align: center;
-      color: var(--color-darkpink);
+      color: var(--color-rose);
       font-weight: bold;
       margin-bottom: 16px;
     }
@@ -253,6 +293,7 @@
   <!-- スタート画面 -->
   <div id="screen-start" class="screen" style="display: block;">
     <div class="logo-container" id="logo-container"></div>
+    <div class="tagline">Realize Me, Live My Essentials</div>
     <h1 id="start-title"></h1>
     <p style="text-align: center; margin-bottom: 32px;">整える力と進む力 / 全16問・約3〜4分</p>
     <div id="start-msg" class="msg-alert" style="display: none;">準備中です</div>
@@ -376,8 +417,8 @@
     URL_FORM: 'https://forms.gle/xLossqMi5GkJo1hC7',
     URL_LINE: 'https://lin.ee/Pk02zOT',
     TITLE: '',
-    COLOR_SETONOERU: '#3096AC',
-    COLOR_SUSUMU: '#E890A8',
+    COLOR_SETONOERU: '#9FCDE9',
+    COLOR_SUSUMU: '#EFA2BC',
     LOGO_URL: '',
     SHARE_TEXT: 'REALMEの診断を受けてみました。あなたはどのタイプ？'
   };
@@ -627,11 +668,11 @@
     
     document.getElementById('result-score-setonoeru').textContent = setonoeru + '/40';
     document.getElementById('gauge-setonoeru').style.width = (setonoeru / 40 * 100) + '%';
-    document.getElementById('gauge-setonoeru').style.backgroundColor = CONFIG.COLOR_SETONOERU || '#3096AC';
+    document.getElementById('gauge-setonoeru').style.backgroundColor = CONFIG.COLOR_SETONOERU || '#9FCDE9';
     
     document.getElementById('result-score-susumu').textContent = susumu + '/40';
     document.getElementById('gauge-susumu').style.width = (susumu / 40 * 100) + '%';
-    document.getElementById('gauge-susumu').style.backgroundColor = CONFIG.COLOR_SUSUMU || '#E890A8';
+    document.getElementById('gauge-susumu').style.backgroundColor = CONFIG.COLOR_SUSUMU || '#EFA2BC';
 
     document.getElementById('result-state').textContent = TYPES[type].state;
     document.getElementById('result-strength').textContent = TYPES[type].strength;
