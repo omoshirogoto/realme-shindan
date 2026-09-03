@@ -431,7 +431,7 @@
     GAS_ENDPOINT: 'https://script.google.com/macros/s/AKfycbxlabBGMXUt3v7Uk5dKIvMRSwYvi6LULDg843q2Yp7K7DV4cB69QIr5eVoPGvcn-HST/exec',  // テスト環境。納品時に伊藤さんのデプロイURLへ差し替える
     URL_FORM: 'https://forms.gle/xLossqMi5GkJo1hC7',
     URL_LINE: 'https://lin.ee/Pk02zOT',
-    TITLE: '',
+    TITLE: '今のあなたに必要なのは『整える？進む？』診断',
     COLOR_SETONOERU: '#9FCDE9',
     COLOR_SUSUMU: '#EFA2BC',
     LOGO_URL: '',
@@ -549,10 +549,7 @@
 
   function checkConfig() {
     let ok = true;
-    if (!CONFIG.TITLE) ok = false;
     if (!CONFIG.GAS_ENDPOINT) ok = false;
-    if (!CONFIG.URL_FORM) ok = false;
-    if (!CONFIG.URL_LINE) ok = false;
     
     Object.keys(TYPES).forEach(function(k) {
       const t = TYPES[k];
