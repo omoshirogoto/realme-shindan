@@ -403,6 +403,7 @@
 
     <div class="share-area">
       <button id="btn-share" class="btn btn-outline">この診断をシェアする</button>
+      <p id="share-msg" style="display:none;font-size:13px;color:var(--color-text);text-align:center;margin-top:6px;"></p>
     </div>
 
     <button class="text-link" onclick="resetState()">もう一度診断する</button>
@@ -698,18 +699,55 @@
     if (!CONFIG.URL_FORM) document.getElementById('btn-form').style.display = 'none';
     if (!CONFIG.URL_LINE) document.getElementById('btn-line').style.display = 'none';
 
-    if (navigator.share) {
-      document.getElementById('btn-share').addEventListener('click', function() {
+    document.getElementById('btn-share').addEventListener('click', function() {
+      if (navigator.share) {
         navigator.share({
           text: CONFIG.SHARE_TEXT,
-          url: window.location.href,
+          url:  window.location.href,
         }).catch(function() {});
-      });
-    } else {
-      document.getElementById('btn-share').style.display = 'none';
-    }
+      } else {
+        copyUrlToClipboard(window.location.href);
+      }
+    });
 
     showScreen('result');
+  }
+
+  function copyUrlToClipboard(url) {
+    var msg = document.getElementById('share-msg');
+    function showMsg(text) {
+      msg.textContent = text;
+      msg.style.display = 'block';
+      setTimeout(function() { msg.style.display = 'none'; }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url)
+        .then(function() { showMsg('リンクをコピーしました'); })
+        .catch(function() { fallbackCopy(url, showMsg); });
+    } else {
+      fallbackCopy(url, showMsg);
+    }
+  }
+
+  function fallbackCopy(url, showMsg) {
+    var msg = document.getElementById('share-msg');
+    var ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    if (ok) {
+      showMsg('リンクをコピーしました');
+    } else {
+      msg.textContent = url;
+      msg.style.display = 'block';
+    }
   }
 
   function sendData(payload) {
